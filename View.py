@@ -37,8 +37,6 @@ class View(QMainWindow):
         self.rendering_view_button.clicked.connect(self.change_display_visibility)
         self.load_folder_button.clicked.connect(self.get_directory)
         self.browse_slider.valueChanged.connect(self.slider_moved)
-        self.rendering_view.hide()
-        self.original_view_button.setChecked(True)
         self.rendering_button.clicked.connect(self.update_rendering)
 
     def update_rendering(self):
@@ -48,6 +46,8 @@ class View(QMainWindow):
         self.toggle_browse_slider(False)
         self.toggle_rendering_button(False)
         self.toggle_rendering_tools(False)
+        self.rendering_view.hide()
+        self.original_view_button.setChecked(True)
 
     def toggle_browse_slider(self, boolean):
         self.browse_slider.setDisabled(not boolean)
@@ -91,7 +91,8 @@ class View(QMainWindow):
     def get_directory(self):
         directory = QFileDialog.getExistingDirectory(self, "Choose a folder")
         if(os.path.exists(directory)):
-            self.control.load_new_patient(directory)
+            if self.control.load_new_patient(directory):
+                self.rendering_view.load_dicom(directory)
 
     def slider_initialization(self, datasetSize):
         self.browse_slider.setRange(0, datasetSize - 1)

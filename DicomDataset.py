@@ -12,12 +12,13 @@ class DicomDataset(object):
         self.dicom_dataset = None
         self.current_index = 0
 
-    def read_dicom_dataset(self, folderPath):
-        temp_dicom_dataset = []
 
-        for path in sorted(os.listdir(folderPath)):
-            if os.path.join(folderPath, path).split(".")[-1] == "dcm":
-                dicom = pydicom.dcmread(os.path.join(folderPath,path))
+    def read_dicom_dataset(self, folder_path):
+        temp_dicom_dataset = []
+        
+        for path in os.listdir(folder_path):
+            if os.path.join(folder_path, path).split(".")[-1] == "dcm":
+                dicom = pydicom.dcmread(os.path.join(folder_path, path))
                 temp_dicom_dataset.append(dicom.pixel_array)
 
         if temp_dicom_dataset:

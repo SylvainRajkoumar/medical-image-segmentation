@@ -14,14 +14,14 @@ class Controller(object):
             self.view.update_current_image(self.dicom_reader.get_current_image())
             self.view.toggle_rendering_button(True)
             self.view.toggle_rendering_tools(False)
-        else:
-            # QMessageBox
-            warning = QMessageBox()
-            warning.setWindowTitle("Error while loading DICOM files")
-            warning.setText("Please make sure that only dicom files are in the selected folder")
-            warning.setStandardButtons(QMessageBox.Ok)
-            warning.exec()
-            # print("Please make sure that only dicom files are in the selected folder")
+            return True
+        #  A déplacer dans la vue
+        warning = QMessageBox()
+        warning.setWindowTitle("Error while loading DICOM files")
+        warning.setText("Please make sure that only dicom files are in the selected folder")
+        warning.setStandardButtons(QMessageBox.Ok)
+        warning.exec()
+        return False
 
     def change_current_image(self, index):
         self.dicom_reader.set_current_image_index(index)
