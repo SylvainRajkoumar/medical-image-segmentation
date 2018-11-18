@@ -16,7 +16,7 @@ class DicomDataset(object):
         temp_dicom_dataset = []
 
         for path in sorted(os.listdir(folderPath)):
-            if os.path.join(folderPath,path).split(".")[-1] == "dcm":
+            if os.path.join(folderPath, path).split(".")[-1] == "dcm":
                 dicom = pydicom.dcmread(os.path.join(folderPath,path))
                 temp_dicom_dataset.append(dicom.pixel_array)
 

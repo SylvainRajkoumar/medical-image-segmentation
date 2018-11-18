@@ -1,6 +1,6 @@
 import cv2
 from DicomDataset import DicomDataset
-
+from PyQt5.QtWidgets import QMessageBox
 
 class Controller(object):
 
@@ -15,8 +15,13 @@ class Controller(object):
             self.view.toggle_rendering_button(True)
             self.view.toggle_rendering_tools(False)
         else:
-            # QDialog
-            print("Please make sure that only dicom files are in the selected folder")
+            # QMessageBox
+            warning = QMessageBox()
+            warning.setWindowTitle("Error while loading DICOM files")
+            warning.setText("Please make sure that only dicom files are in the selected folder")
+            warning.setStandardButtons(QMessageBox.Ok)
+            warning.exec()
+            # print("Please make sure that only dicom files are in the selected folder")
 
     def change_current_image(self, index):
         self.dicom_reader.set_current_image_index(index)

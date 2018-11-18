@@ -46,7 +46,7 @@ class View(QMainWindow):
 
     def ui_initialization(self):
         self.toggle_browse_slider(False)
-        # self.toggle_rendering_button(False)
+        self.toggle_rendering_button(False)
         self.toggle_rendering_tools(False)
 
     def toggle_browse_slider(self, boolean):
@@ -56,8 +56,6 @@ class View(QMainWindow):
         self.smooth_rendering_slider.setDisabled(not boolean)
         self.save_rendering_button.setDisabled(not boolean)
         self.reset_camera_button.setDisabled(not boolean)
-        # self.rendering_view_button.setDisabled(not boolean)
-        # self.both_view_button.setDisabled(not boolean)
 
     def toggle_rendering_button(self, boolean):
         self.rendering_button.setDisabled(not boolean)
