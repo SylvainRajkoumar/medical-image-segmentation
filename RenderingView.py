@@ -64,4 +64,4 @@ class RenderingView(QFrame):
         self.renderer.AddActor(outline)
         self.renderer.AddActor(arter)
 
-        # self.renderer_interactor.Initialize()
+        self.renderer_interactor.Initialize()

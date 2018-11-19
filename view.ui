@@ -108,7 +108,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="toggleSegmentationCheckbox">
+       <widget class="QCheckBox" name="segmentation_checkbox">
         <property name="minimumSize">
          <size>
           <width>300</width>
@@ -146,7 +146,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QSlider" name="thresholdSlider">
+       <widget class="QSlider" name="segmentation_threshold_slider">
         <property name="minimumSize">
          <size>
           <width>300</width>

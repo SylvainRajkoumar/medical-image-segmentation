@@ -26,21 +26,20 @@ class View(QMainWindow):
         self.horizontalLayout_3.addWidget(self.rendering_view)
 
         self.ui_initialization()
-        self.signal_slot_initialization()
 
     def set_control(self, controller):
         self.control = controller
+        self.signal_slot_initialization()
 
     def signal_slot_initialization(self):
         self.both_view_button.clicked.connect(self.change_display_visibility)
         self.original_view_button.clicked.connect(self.change_display_visibility)
         self.rendering_view_button.clicked.connect(self.change_display_visibility)
         self.load_folder_button.clicked.connect(self.get_directory)
-        self.browse_slider.valueChanged.connect(self.slider_moved)
-        self.rendering_button.clicked.connect(self.update_rendering)
-
-    def update_rendering(self):
-        self.rendering_view.update_rendering_view()
+        self.browse_slider.valueChanged.connect(self.handle_browse_slider)
+        self.rendering_button.clicked.connect(self.rendering_view.update_rendering_view)
+        self.segmentation_checkbox.clicked.connect(self.control.toggle_segmentation)
+        self.segmentation_threshold_slider.valueChanged(self.handle_segmentation_slider)
 
     def ui_initialization(self):
         self.toggle_browse_slider(False)
@@ -61,9 +60,13 @@ class View(QMainWindow):
         self.rendering_button.setDisabled(not boolean)
 
     @pyqtSlot()
-    def slider_moved(self):
+    def handle_browse_slider(self):
         self.control.change_current_image(self.browse_slider.value())
 
+    @pyqtSlot()
+    def handle_segmentation_slider(self):
+        self.control.adjust_segmentation(self.segmentation_threshold_slider.value())
+    
     @pyqtSlot()
     def change_display_visibility(self):
         sender = self.sender()
@@ -100,7 +103,8 @@ class View(QMainWindow):
         self.toggle_browse_slider(True)
 
     def segmentation_slider_initialization(self, max_value):
-        pass
+        self.segmentation_threshold_slider.setRange(0, max_value)
+        self.segmentation_threshold_slider.setValue(0)
 
 
     def update_current_image(self, image):
@@ -115,11 +119,3 @@ class View(QMainWindow):
         qImg = QImage(temp, width, height, width, QImage.Format_Grayscale8)
 
         return QPixmap.fromImage(qImg)
-
-
-    def a(self):
-        #récupérer l'index de l'image à choisir (valeur du slider)
-        #récupérer la valeur du seuillage (valeur du slider)
-        #valeur checkbox (masque seuillage)
-        #emettre un signal (à relier dans le controller)
-        pass
