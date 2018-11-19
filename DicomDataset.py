@@ -35,7 +35,7 @@ class DicomDataset(object):
     def get_dataset_size(self):
         return len(self.dicom_dataset)
 
-    def get_dataset_maxvalue(self):
+    def get_dataset_max_value(self):
         return np.amax(self.dicom_dataset)
 
 if __name__ == '__main__':

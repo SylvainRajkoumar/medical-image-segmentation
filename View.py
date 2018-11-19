@@ -94,10 +94,14 @@ class View(QMainWindow):
             if self.control.load_new_patient(directory):
                 self.rendering_view.load_dicom(directory)
 
-    def slider_initialization(self, datasetSize):
-        self.browse_slider.setRange(0, datasetSize - 1)
+    def browse_slider_initialization(self, dataset_size):
+        self.browse_slider.setRange(0, dataset_size - 1)
         self.browse_slider.setValue(0)
         self.toggle_browse_slider(True)
+
+    def segmentation_slider_initialization(self, max_value):
+        pass
+
 
     def update_current_image(self, image):
         pixmap = self.convert_to_grayscale_pixmap(image)

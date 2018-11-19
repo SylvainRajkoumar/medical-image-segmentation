@@ -10,7 +10,8 @@ class Controller(object):
 
     def load_new_patient(self, directory):
         if self.dicom_reader.read_dicom_dataset(directory):
-            self.view.slider_initialization(self.dicom_reader.get_dataset_size())
+            self.view.browse_slider_initialization(self.dicom_reader.get_dataset_size())
+            self.view.segmentation_slider_initialization(self.dicom_reader.get_dataset_max_value())
             self.view.update_current_image(self.dicom_reader.get_current_image())
             self.view.toggle_rendering_button(True)
             self.view.toggle_rendering_tools(False)
