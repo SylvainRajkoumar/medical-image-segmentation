@@ -37,10 +37,3 @@ class DicomDataset(object):
 
     def get_dataset_max_value(self):
         return np.amax(self.dicom_dataset)
-
-if __name__ == '__main__':
-    a = DicomDataset()
-    start = time.time()
-    a.read_dicom_dataset("D:/Projet_3CT_Medical/Data_IRM/02-OS/")
-    end = time.time()
-    print(end - start)

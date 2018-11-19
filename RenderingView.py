@@ -16,7 +16,6 @@ class RenderingView(QFrame):
         
     def set_rendering_threshold(self, value):
         self.rendering_threshold = value
-        print(self.rendering_threshold)
 
     def load_dicom(self, directory):
 
@@ -69,7 +68,8 @@ class RenderingView(QFrame):
         self.outline.SetMapper(mapOutline)
         self.outline.GetProperty().SetColor(1,1,1)
 
-        self.renderer.AddActor(self.outline)
         self.renderer.AddActor(self.arter)
+        self.renderer.AddActor(self.outline)
+        
 
         self.renderer_interactor.Initialize()
