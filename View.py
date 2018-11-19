@@ -40,28 +40,33 @@ class View(QMainWindow):
         self.rendering_button.clicked.connect(self.rendering_view.update_rendering_view)
         self.segmentation_checkbox.clicked.connect(self.control.toggle_segmentation)
         self.segmentation_threshold_slider.valueChanged.connect(self.handle_segmentation_slider)
+        self.reset_camera_button.clicked.connect(self.rendering_view.reset_camera)
 
     def ui_initialization(self):
         self.toggle_browse_slider(False)
         self.toggle_rendering_button(False)
         self.toggle_rendering_tools(False)
-        self.rendering_view.hide()
+        self.rendering_view.setVisible(False)
         self.original_view_button.setChecked(True)
         self.toggle_segmentation_checkbox(False)
+        self.toggle_segmentation_slider(False)
+
+    def toggle_segmentation_slider(self, boolean):
+        self.segmentation_threshold_slider.setVisible(boolean)
 
     def toggle_browse_slider(self, boolean):
-        self.browse_slider.setDisabled(not boolean)
+        self.browse_slider.setVisible(boolean)
 
     def toggle_segmentation_checkbox(self, boolean):
-        self.segmentation_checkbox.setDisabled(not boolean)
+        self.segmentation_checkbox.setVisible(boolean)
 
     def toggle_rendering_tools(self, boolean):
-        self.smooth_rendering_slider.setDisabled(not boolean)
-        self.save_rendering_button.setDisabled(not boolean)
-        self.reset_camera_button.setDisabled(not boolean)
+        self.smooth_rendering_slider.setVisible(boolean)
+        self.save_rendering_button.setVisible(boolean)
+        self.reset_camera_button.setVisible(boolean)
 
     def toggle_rendering_button(self, boolean):
-        self.rendering_button.setDisabled(not boolean)
+        self.rendering_button.setVisible(boolean)
 
     @pyqtSlot()
     def handle_browse_slider(self):
@@ -94,8 +99,6 @@ class View(QMainWindow):
                 self.showNormal()
             else:
                 self.showFullScreen()
-        elif event.key() == Qt.Key_Escape:
-            self.deleteLater()
 
     @pyqtSlot()
     def get_directory(self):
@@ -106,7 +109,8 @@ class View(QMainWindow):
                 self.rendering_view.set_rendering_threshold(0)
                 self.toggle_segmentation_checkbox(True)
                 self.toggle_rendering_button(True)
-                self.toggle_rendering_tools(False)
+                self.toggle_rendering_tools(True)
+                self.toggle_segmentation_slider(True)
 
     def browse_slider_initialization(self, dataset_size):
         self.browse_slider.setRange(0, dataset_size - 1)

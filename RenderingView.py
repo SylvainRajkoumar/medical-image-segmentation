@@ -25,6 +25,7 @@ class RenderingView(QFrame):
 
     def window_initialization(self):
         vertical_layout = QVBoxLayout()
+        vertical_layout.setContentsMargins(0,0,0,0)
         self.vtk_widget = QVTKRenderWindowInteractor(self)
         self.vtk_widget.setSizePolicy(QSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored))
         vertical_layout.addWidget(self.vtk_widget)
@@ -36,6 +37,10 @@ class RenderingView(QFrame):
         self.setLayout(vertical_layout)
         self.renderer_interactor.Initialize()
 
+    def reset_camera(self):
+        self.renderer.ResetCamera()
+        self.renderer_interactor.Initialize()
+        
     def update_rendering_view(self):
         self.renderer.RemoveActor(self.outline)
         self.renderer.RemoveActor(self.arter)
