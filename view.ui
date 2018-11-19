@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1700</width>
+    <width>1539</width>
     <height>915</height>
    </rect>
   </property>
@@ -127,7 +127,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="thresholdLabel">
+       <widget class="QLabel" name="segmentation_threshold_label">
         <property name="minimumSize">
          <size>
           <width>300</width>
@@ -141,7 +141,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Seuillage</string>
+         <string>Segmentation Threshold : 0</string>
         </property>
        </widget>
       </item>

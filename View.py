@@ -39,7 +39,7 @@ class View(QMainWindow):
         self.browse_slider.valueChanged.connect(self.handle_browse_slider)
         self.rendering_button.clicked.connect(self.rendering_view.update_rendering_view)
         self.segmentation_checkbox.clicked.connect(self.control.toggle_segmentation)
-        self.segmentation_threshold_slider.valueChanged(self.handle_segmentation_slider)
+        self.segmentation_threshold_slider.valueChanged.connect(self.handle_segmentation_slider)
 
     def ui_initialization(self):
         self.toggle_browse_slider(False)
@@ -66,6 +66,7 @@ class View(QMainWindow):
     @pyqtSlot()
     def handle_segmentation_slider(self):
         self.control.adjust_segmentation(self.segmentation_threshold_slider.value())
+        self.segmentation_threshold_label.setText("Segmentation Threshold : {}".format(self.segmentation_threshold_slider.value()))
     
     @pyqtSlot()
     def change_display_visibility(self):
@@ -107,7 +108,7 @@ class View(QMainWindow):
         self.segmentation_threshold_slider.setValue(0)
 
 
-    def update_current_image(self, image):
+    def update_original_view(self, image):
         pixmap = self.convert_to_grayscale_pixmap(image)
         self.original_image_display.setPixmap(pixmap.scaled(self.original_image_display.width(), self.original_image_display.height(), Qt.KeepAspectRatio))
 
