@@ -31,7 +31,6 @@ class RenderingView(QFrame):
         self.renderer = vtk.vtkRenderer()
         self.vtk_widget.GetRenderWindow().AddRenderer(self.renderer)
         self.renderer_interactor = self.vtk_widget.GetRenderWindow().GetInteractor()
-        self.renderer.ResetCamera()
         self.renderer.SetBackground(0,0,0)
 
         self.setLayout(vertical_layout)
@@ -40,15 +39,12 @@ class RenderingView(QFrame):
     def update_rendering_view(self):
         self.renderer.RemoveActor(self.outline)
         self.renderer.RemoveActor(self.arter)
-        # self.renderer.Clear()
-        self.renderer.ResetCamera()
-        self.renderer.SetBackground(0,0,0)
 
-        arterExtractor = vtk.vtkContourFilter()
-        arterExtractor.SetInputConnection(self.vtk_image_reader.GetOutputPort())
-        arterExtractor.SetValue(0, self.rendering_threshold)
+        self.arterExtractor = vtk.vtkContourFilter()
+        self.arterExtractor.SetInputConnection(self.vtk_image_reader.GetOutputPort())
+        self.arterExtractor.SetValue(0, self.rendering_threshold)
         arterNormals = vtk.vtkPolyDataNormals() #Passage de la matrice de pixels à des coordonées géométriques / 3D
-        arterNormals.SetInputConnection(arterExtractor.GetOutputPort())
+        arterNormals.SetInputConnection(self.arterExtractor.GetOutputPort())
         arterNormals.SetFeatureAngle(100.0)
         arterStripper = vtk.vtkStripper() #Génération d'un ensemble de polygone à partir des coordonées calculées précédemment
         arterStripper.SetInputConnection(arterNormals.GetOutputPort())
@@ -64,12 +60,11 @@ class RenderingView(QFrame):
         mapOutline = vtk.vtkPolyDataMapper()
         mapOutline.SetInputConnection(outlineData.GetOutputPort())
 
-        
         self.outline.SetMapper(mapOutline)
         self.outline.GetProperty().SetColor(1,1,1)
 
-        self.renderer.AddActor(self.arter)
         self.renderer.AddActor(self.outline)
-        
+        self.renderer.AddActor(self.arter)
 
+        self.renderer.ResetCamera()
         self.renderer_interactor.Initialize()
