@@ -47,9 +47,13 @@ class View(QMainWindow):
         self.toggle_rendering_tools(False)
         self.rendering_view.hide()
         self.original_view_button.setChecked(True)
+        self.toggle_segmentation_checkbox(False)
 
     def toggle_browse_slider(self, boolean):
         self.browse_slider.setDisabled(not boolean)
+
+    def toggle_segmentation_checkbox(self, boolean):
+        self.segmentation_checkbox.setDisabled(not boolean)
 
     def toggle_rendering_tools(self, boolean):
         self.smooth_rendering_slider.setDisabled(not boolean)
@@ -65,8 +69,10 @@ class View(QMainWindow):
 
     @pyqtSlot()
     def handle_segmentation_slider(self):
-        self.control.adjust_segmentation(self.segmentation_threshold_slider.value())
-        self.segmentation_threshold_label.setText("Segmentation Threshold : {}".format(self.segmentation_threshold_slider.value()))
+        slider_value = self.segmentation_threshold_slider.value()
+        self.control.adjust_segmentation(slider_value)
+        self.rendering_view.set_rendering_threshold(slider_value)
+        self.segmentation_threshold_label.setText("Segmentation Threshold : {}".format(slider_value))
     
     @pyqtSlot()
     def change_display_visibility(self):
@@ -97,6 +103,10 @@ class View(QMainWindow):
         if(os.path.exists(directory)):
             if self.control.load_new_patient(directory):
                 self.rendering_view.load_dicom(directory)
+                self.rendering_view.set_rendering_threshold(0)
+                self.toggle_segmentation_checkbox(True)
+                self.toggle_rendering_button(True)
+                self.toggle_rendering_tools(False)
 
     def browse_slider_initialization(self, dataset_size):
         self.browse_slider.setRange(0, dataset_size - 1)
@@ -106,7 +116,6 @@ class View(QMainWindow):
     def segmentation_slider_initialization(self, max_value):
         self.segmentation_threshold_slider.setRange(0, max_value)
         self.segmentation_threshold_slider.setValue(0)
-
 
     def update_original_view(self, image):
         pixmap = self.convert_to_grayscale_pixmap(image)

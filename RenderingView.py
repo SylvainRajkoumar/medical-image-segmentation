@@ -8,8 +8,15 @@ class RenderingView(QFrame):
 
     def __init__(self):
         QFrame.__init__(self)
+        self.rendering_threshold = 0
+        self.arter = vtk.vtkActor()
+        self.outline = vtk.vtkActor()
         self.vtk_image_reader = vtk.vtkDICOMImageReader()
         self.window_initialization()
+        
+    def set_rendering_threshold(self, value):
+        self.rendering_threshold = value
+        print(self.rendering_threshold)
 
     def load_dicom(self, directory):
 
@@ -32,13 +39,15 @@ class RenderingView(QFrame):
         self.renderer_interactor.Initialize()
 
     def update_rendering_view(self):
-        self.renderer.Clear()
+        self.renderer.RemoveActor(self.outline)
+        self.renderer.RemoveActor(self.arter)
+        # self.renderer.Clear()
         self.renderer.ResetCamera()
         self.renderer.SetBackground(0,0,0)
 
         arterExtractor = vtk.vtkContourFilter()
         arterExtractor.SetInputConnection(self.vtk_image_reader.GetOutputPort())
-        arterExtractor.SetValue(0, 350)
+        arterExtractor.SetValue(0, self.rendering_threshold)
         arterNormals = vtk.vtkPolyDataNormals() #Passage de la matrice de pixels à des coordonées géométriques / 3D
         arterNormals.SetInputConnection(arterExtractor.GetOutputPort())
         arterNormals.SetFeatureAngle(100.0)
@@ -48,20 +57,19 @@ class RenderingView(QFrame):
         arterMapper.SetInputConnection(arterStripper.GetOutputPort())
         arterMapper.ScalarVisibilityOff()
         
-        arter = vtk.vtkActor()
-        arter.SetMapper(arterMapper)
-        arter.GetProperty().SetDiffuseColor(1, 1, .9412)
+        self.arter.SetMapper(arterMapper)
+        self.arter.GetProperty().SetDiffuseColor(1, 1, .9412)
         
         outlineData = vtk.vtkOutlineFilter()
         outlineData.SetInputConnection(self.vtk_image_reader.GetOutputPort())
         mapOutline = vtk.vtkPolyDataMapper()
         mapOutline.SetInputConnection(outlineData.GetOutputPort())
 
-        outline = vtk.vtkActor()
-        outline.SetMapper(mapOutline)
-        outline.GetProperty().SetColor(1,1,1)
+        
+        self.outline.SetMapper(mapOutline)
+        self.outline.GetProperty().SetColor(1,1,1)
 
-        self.renderer.AddActor(outline)
-        self.renderer.AddActor(arter)
+        self.renderer.AddActor(self.outline)
+        self.renderer.AddActor(self.arter)
 
         self.renderer_interactor.Initialize()
