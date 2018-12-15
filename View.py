@@ -52,6 +52,7 @@ class View(QMainWindow):
         self.toggle_segmentation_slider(False)
 
     def toggle_segmentation_slider(self, boolean):
+        self.segmentation_threshold_label.setVisible(boolean)
         self.segmentation_threshold_slider.setVisible(boolean)
 
     def toggle_browse_slider(self, boolean):
@@ -61,9 +62,9 @@ class View(QMainWindow):
         self.segmentation_checkbox.setVisible(boolean)
 
     def toggle_rendering_tools(self, boolean):
-        self.smooth_rendering_slider.setVisible(boolean)
         self.save_rendering_button.setVisible(boolean)
         self.reset_camera_button.setVisible(boolean)
+
 
     def toggle_rendering_button(self, boolean):
         self.rendering_button.setVisible(boolean)

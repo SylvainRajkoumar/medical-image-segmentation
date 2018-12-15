@@ -32,6 +32,7 @@ color: rgb(255, 255, 255);</string>
 {
    background-color:rgb(0,140,186);
 }
+
 QPushButton
 {
 border: none;
@@ -41,7 +42,26 @@ padding: 15px 32px;
 text-align: center;
 text-decoration: none;
 font-size: 16px;
+}
 
+QLabel
+{
+border: none;
+background-color:rgb(70,70,70);
+color: rgb(255, 255, 255);
+text-align: center;
+text-decoration: none;
+font-size: 16px;
+}
+
+QCheckBox
+{
+border: none;
+background-color:rgb(70,70,70);
+color: rgb(255, 255, 255);
+text-align: center;
+text-decoration: none;
+font-size: 16px;
 }
 </string>
    </property>
@@ -206,47 +226,6 @@ font-size: 16px;
       </item>
       <item>
        <widget class="QSlider" name="segmentation_threshold_slider">
-        <property name="minimumSize">
-         <size>
-          <width>300</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>300</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_4">
-        <property name="minimumSize">
-         <size>
-          <width>300</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>300</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Lissage 3D</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSlider" name="smooth_rendering_slider">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
         <property name="minimumSize">
          <size>
           <width>300</width>
