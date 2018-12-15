@@ -18,7 +18,7 @@ class RenderingView(QFrame):
         self.rendering_threshold = value
 
     def load_dicom(self, directory):
-
+        self.vtk_image_reader = vtk.vtkDICOMImageReader()
         self.vtk_image_reader.SetDirectoryName(directory)
         self.vtk_image_reader.Update()
         self.update_rendering_view()

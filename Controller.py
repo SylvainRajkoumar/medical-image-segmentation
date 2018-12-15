@@ -16,8 +16,8 @@ class Controller(object):
             self.view.browse_slider_initialization(self.dicom_reader.get_dataset_size())
             self.view.segmentation_slider_initialization(self.dicom_reader.get_dataset_max_value())
             self.update_current_image()
-
             return True
+            
         #  A déplacer dans la vue
         warning = QMessageBox()
         warning.setWindowTitle("Error while loading DICOM files")
