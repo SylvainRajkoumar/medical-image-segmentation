@@ -1,7 +1,7 @@
 # medical-image-segmentation
 
 # Prerequisites
-DICOM Data
+DICOM Data  
 Python 3.7 version 64-Bit https://www.python.org/downloads/
 
 ## Installing
