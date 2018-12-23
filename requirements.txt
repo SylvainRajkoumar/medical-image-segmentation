@@ -1,5 +1,5 @@
 opencv-python
 pyqt5
 pydicom
-vtk
+vtk==8.1.2
 numpy
