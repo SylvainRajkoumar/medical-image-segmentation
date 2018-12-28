@@ -43,7 +43,7 @@ class View(QMainWindow):
         self.reset_camera_button.clicked.connect(self.rendering_view.reset_camera)
 
     def ui_initialization(self):
-        self.toggle_browse_slider(False)
+        self.toggle_browse_tools(False)
         self.toggle_rendering_button(False)
         self.toggle_rendering_tools(False)
         self.rendering_view.setVisible(False)
@@ -55,7 +55,8 @@ class View(QMainWindow):
         self.segmentation_threshold_label.setVisible(boolean)
         self.segmentation_threshold_slider.setVisible(boolean)
 
-    def toggle_browse_slider(self, boolean):
+    def toggle_browse_tools(self, boolean):
+        self.image_number_label.setVisible(boolean)
         self.browse_slider.setVisible(boolean)
 
     def toggle_segmentation_checkbox(self, boolean):
@@ -65,13 +66,14 @@ class View(QMainWindow):
         self.save_rendering_button.setVisible(boolean)
         self.reset_camera_button.setVisible(boolean)
 
-
     def toggle_rendering_button(self, boolean):
         self.rendering_button.setVisible(boolean)
 
     @pyqtSlot()
     def handle_browse_slider(self):
-        self.control.change_current_image(self.browse_slider.value())
+        image_number = self.browse_slider.value()
+        self.control.change_current_image(image_number)
+        self.image_number_label.setText("Image Number : {}".format(image_number))
 
     @pyqtSlot()
     def handle_segmentation_slider(self):
@@ -116,7 +118,7 @@ class View(QMainWindow):
     def browse_slider_initialization(self, dataset_size):
         self.browse_slider.setRange(0, dataset_size - 1)
         self.browse_slider.setValue(0)
-        self.toggle_browse_slider(True)
+        self.toggle_browse_tools(True)
 
     def segmentation_slider_initialization(self, max_value):
         self.segmentation_threshold_slider.setRange(0, max_value)

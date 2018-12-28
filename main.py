@@ -15,7 +15,6 @@ if __name__ == '__main__':
     # mw = windows.ModernWindow(a)
     # mw.show()
 
-
     b = Controller(a)
     a.set_control(b)
     sys.exit(app.exec_())
