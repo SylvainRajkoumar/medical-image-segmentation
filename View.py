@@ -10,7 +10,7 @@ from RenderingView import RenderingView
 from Controller import Controller
 
 from PyQt5.QtCore import pyqtSlot, Qt
-from PyQt5.QtWidgets import QMainWindow, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QPushButton
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QImage, QPixmap
 
@@ -23,7 +23,7 @@ class View(QMainWindow):
         self.show()
         self.control = None
         self.rendering_view = RenderingView()
-        self.horizontalLayout_3.addWidget(self.rendering_view)
+        self.display_layout.addWidget(self.rendering_view)
 
         self.ui_initialization()
 

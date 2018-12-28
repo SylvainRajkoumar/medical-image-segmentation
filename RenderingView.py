@@ -2,7 +2,7 @@ import vtk
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 from PyQt5.QtWidgets import QFrame, QVBoxLayout, QSizePolicy
 from PyQt5.QtCore import Qt
-
+from utils.decorators import timeit
 
 class RenderingView(QFrame):
 
@@ -17,6 +17,7 @@ class RenderingView(QFrame):
     def set_rendering_threshold(self, value):
         self.rendering_threshold = value
 
+    @timeit
     def load_dicom(self, directory):
         self.vtk_image_reader = vtk.vtkDICOMImageReader()
         self.vtk_image_reader.SetDirectoryName(directory)

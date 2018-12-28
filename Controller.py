@@ -2,6 +2,7 @@ import cv2
 from DicomDataset import DicomDataset
 from PyQt5.QtWidgets import QMessageBox
 from DicomProcessing import DicomProcessing
+import threading
 
 class Controller(object):
 

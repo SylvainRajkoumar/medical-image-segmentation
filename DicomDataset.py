@@ -3,7 +3,8 @@ import glob
 import time
 import os
 import numpy as np
-
+import vtk
+from vtk.util import numpy_support
 
 class DicomDataset(object):
 
@@ -15,12 +16,11 @@ class DicomDataset(object):
 
     def read_dicom_dataset(self, folder_path):
         temp_dicom_dataset = []
-        
         for path in os.listdir(folder_path):
             if os.path.join(folder_path, path).split(".")[-1] == "dcm":
                 dicom = pydicom.dcmread(os.path.join(folder_path, path))
                 temp_dicom_dataset.append(dicom.pixel_array)
-
+                
         if temp_dicom_dataset:
             self.dicom_dataset = temp_dicom_dataset.copy()
             return True

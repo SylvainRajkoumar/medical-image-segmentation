@@ -1,6 +1,5 @@
 import cv2
 
-
 class DicomProcessing(object):
 
     def __init__(self):
