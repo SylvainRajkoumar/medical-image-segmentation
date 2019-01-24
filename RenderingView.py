@@ -4,6 +4,11 @@ from PyQt5.QtWidgets import QFrame, QVBoxLayout, QSizePolicy
 from PyQt5.QtCore import Qt
 from utils.decorators import timeit
 
+filename = "test.stl"
+stlWriter = vtk.vtkSTLWriter()
+stlWriter.SetFileName(filename)
+
+
 class RenderingView(QFrame):
 
     def __init__(self):
@@ -13,7 +18,7 @@ class RenderingView(QFrame):
         self.outline = vtk.vtkActor()
         self.vtk_image_reader = vtk.vtkDICOMImageReader()
         self.window_initialization()
-        
+
     def set_rendering_threshold(self, value):
         self.rendering_threshold = value
 
@@ -24,6 +29,7 @@ class RenderingView(QFrame):
         self.vtk_image_reader.Update()
         self.update_rendering_view()
 
+    @timeit
     def window_initialization(self):
         vertical_layout = QVBoxLayout()
         vertical_layout.setContentsMargins(0,0,0,0)
@@ -37,23 +43,28 @@ class RenderingView(QFrame):
 
         self.setLayout(vertical_layout)
         self.renderer_interactor.Initialize()
-
+    
     def reset_camera(self):
         self.renderer.ResetCamera()
         self.renderer_interactor.Initialize()
-        
-    def update_rendering_view(self):
+
+    @timeit
+    def update_rendering_view(self, *args):
         self.renderer.RemoveActor(self.outline)
         self.renderer.RemoveActor(self.arter)
 
         self.arterExtractor = vtk.vtkContourFilter()
         self.arterExtractor.SetInputConnection(self.vtk_image_reader.GetOutputPort())
         self.arterExtractor.SetValue(0, self.rendering_threshold)
+
         arterNormals = vtk.vtkPolyDataNormals() #Passage de la matrice de pixels à des coordonées géométriques / 3D
         arterNormals.SetInputConnection(self.arterExtractor.GetOutputPort())
         arterNormals.SetFeatureAngle(100.0)
+        stlWriter.SetInputConnection(arterNormals.GetOutputPort())
+        stlWriter.Write()
         arterStripper = vtk.vtkStripper() #Génération d'un ensemble de polygone à partir des coordonées calculées précédemment
         arterStripper.SetInputConnection(arterNormals.GetOutputPort())
+
         arterMapper = vtk.vtkPolyDataMapper() #Permet de passer des polygones à des formes géométriques graphiques
         arterMapper.SetInputConnection(arterStripper.GetOutputPort())
         arterMapper.ScalarVisibilityOff()
@@ -71,6 +82,6 @@ class RenderingView(QFrame):
 
         self.renderer.AddActor(self.outline)
         self.renderer.AddActor(self.arter)
-
+   
         self.renderer.ResetCamera()
         self.renderer_interactor.Initialize()

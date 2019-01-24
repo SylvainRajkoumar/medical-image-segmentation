@@ -5,6 +5,6 @@ def timeit(method):
         ts = time.time()
         result = method(*args, **kw)
         te = time.time()
-        print("The function {} took {} ms".format(method.__name__, (te - ts) * 1000))
+        print(" {} : {} ms".format(method.__name__, (te - ts) * 1000))
         return result
     return timed

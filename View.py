@@ -2,17 +2,16 @@ import os
 
 import cv2
 import numpy as np 
-
 import vtk
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
-
-from RenderingView import RenderingView
-from Controller import Controller
-
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QPushButton
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QImage, QPixmap
+
+from RenderingView import RenderingView
+from Controller import Controller
+
 
 
 class View(QMainWindow):

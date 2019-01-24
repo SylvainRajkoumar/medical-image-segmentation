@@ -1,8 +1,11 @@
+# Third-Party Libraries
 import cv2
-from DicomDataset import DicomDataset
 from PyQt5.QtWidgets import QMessageBox
+
+from DicomDataset import DicomDataset
 from DicomProcessing import DicomProcessing
-import threading
+from utils.decorators import timeit
+
 
 class Controller(object):
 
@@ -12,13 +15,15 @@ class Controller(object):
         self.dicom_processing = DicomProcessing()
         self.enable_segmentation = False
 
+    @timeit
     def load_new_patient(self, directory):
+
         if self.dicom_reader.read_dicom_dataset(directory):
             self.view.browse_slider_initialization(self.dicom_reader.get_dataset_size())
             self.view.segmentation_slider_initialization(self.dicom_reader.get_dataset_max_value())
             self.update_current_image()
             return True
-            
+        
         #  A déplacer dans la vue
         warning = QMessageBox()
         warning.setWindowTitle("Error while loading DICOM files")
