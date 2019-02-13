@@ -57,11 +57,12 @@ class RenderingView(QFrame):
         self.arterExtractor.SetInputConnection(self.vtk_image_reader.GetOutputPort())
         self.arterExtractor.SetValue(0, self.rendering_threshold)
 
-        arterNormals = vtk.vtkPolyDataNormals() #Passage de la matrice de pixels à des coordonées géométriques / 3D
+        arterNormals = vtk.vtkPolyDataNormals() #Calcul des normales
         arterNormals.SetInputConnection(self.arterExtractor.GetOutputPort())
         arterNormals.SetFeatureAngle(100.0)
         stlWriter.SetInputConnection(arterNormals.GetOutputPort())
         stlWriter.Write()
+
         arterStripper = vtk.vtkStripper() #Génération d'un ensemble de polygone à partir des coordonées calculées précédemment
         arterStripper.SetInputConnection(arterNormals.GetOutputPort())
 
@@ -78,7 +79,7 @@ class RenderingView(QFrame):
         mapOutline.SetInputConnection(outlineData.GetOutputPort())
 
         self.outline.SetMapper(mapOutline)
-        self.outline.GetProperty().SetColor(1,1,1)
+        self.outline.GetProperty().SetColor(1, 1, 1)
 
         self.renderer.AddActor(self.outline)
         self.renderer.AddActor(self.arter)

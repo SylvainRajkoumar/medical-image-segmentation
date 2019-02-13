@@ -6,7 +6,6 @@ from DicomDataset import DicomDataset
 from DicomProcessing import DicomProcessing
 from utils.decorators import timeit
 
-
 class Controller(object):
 
     def __init__(self, view):
