@@ -12,6 +12,7 @@ class DicomProcessing(object):
         ellipsekernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
         mask = cv2.erode(mask, ellipsekernel, iterations = 1)
         mask = cv2.dilate(mask, ellipsekernel, iterations = 1)
+        
         segmented_image = cv2.bitwise_and(image, mask)
         return segmented_image
 

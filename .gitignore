@@ -8,7 +8,8 @@ __pycache__/
 
 # C extensions
 *.so
-
+*.stl
+segmented_images/
 # Distribution / packaging
 .Python
 build/

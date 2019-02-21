@@ -1,10 +1,14 @@
 # Third-Party Libraries
 import cv2
+import numpy as np
 from PyQt5.QtWidgets import QMessageBox
 
 from DicomDataset import DicomDataset
 from DicomProcessing import DicomProcessing
 from utils.decorators import timeit
+import pydicom
+import os, glob, shutil
+
 
 class Controller(object):
 
@@ -49,3 +53,19 @@ class Controller(object):
         if self.enable_segmentation:
             image = self.dicom_processing.segmentation(image)
         self.view.update_original_view(image)
+
+    def save_segmentation(self):
+        images, filenames, raw_data = self.dicom_reader.get_dataset()
+        path = "segmented_images"
+        if os.path.isdir('./' + path):
+            shutil.rmtree('./' + path)
+        os.mkdir(path)
+        os.chdir('./' + path)
+
+        for image, filename, raw in zip(images, filenames, raw_data):
+            raw.PixelData = self.dicom_processing.segmentation(image)
+            raw.Rows = 352
+            raw.Colums = 308
+            pydicom.dcmwrite(filename, raw)
+        os.chdir('../')
+        return path

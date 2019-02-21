@@ -13,7 +13,6 @@ from RenderingView import RenderingView
 from Controller import Controller
 
 
-
 class View(QMainWindow):
 
     def __init__(self):
@@ -36,10 +35,14 @@ class View(QMainWindow):
         self.rendering_view_button.clicked.connect(self.change_display_visibility)
         self.load_folder_button.clicked.connect(self.get_directory)
         self.browse_slider.valueChanged.connect(self.handle_browse_slider)
-        self.rendering_button.clicked.connect(self.rendering_view.update_rendering_view)
+        self.rendering_button.clicked.connect(self.save_segmentation)
         self.segmentation_checkbox.clicked.connect(self.control.toggle_segmentation)
         self.segmentation_threshold_slider.valueChanged.connect(self.handle_segmentation_slider)
         self.reset_camera_button.clicked.connect(self.rendering_view.reset_camera)
+
+    def save_segmentation(self):
+        foldername = self.control.save_segmentation()
+        self.rendering_view.load_dicom(foldername)
 
     def ui_initialization(self):
         self.toggle_browse_tools(False)
