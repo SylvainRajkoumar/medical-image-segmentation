@@ -59,7 +59,7 @@ class RenderingView(QFrame):
     def update_rendering_view(self, *args):
         self.renderer.RemoveActor(self.outline)
         self.renderer.RemoveActor(self.arter)
-
+        self.renderer.SetBackground(0.1, 0.1, 0.2)
         self.arterExtractor = vtk.vtkContourFilter()
         self.arterExtractor.SetInputConnection(self.vtk_image_reader.GetOutputPort())
         self.arterExtractor.SetValue(0, self.rendering_threshold)

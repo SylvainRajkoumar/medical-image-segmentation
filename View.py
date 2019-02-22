@@ -35,12 +35,12 @@ class View(QMainWindow):
         self.rendering_view_button.clicked.connect(self.change_display_visibility)
         self.load_folder_button.clicked.connect(self.get_directory)
         self.browse_slider.valueChanged.connect(self.handle_browse_slider)
-        self.rendering_button.clicked.connect(self.save_segmentation)
+        self.rendering_button.clicked.connect(self.vtk_rendering)
         self.segmentation_checkbox.clicked.connect(self.control.toggle_segmentation)
         self.segmentation_threshold_slider.valueChanged.connect(self.handle_segmentation_slider)
         self.reset_camera_button.clicked.connect(self.rendering_view.reset_camera)
 
-    def save_segmentation(self):
+    def vtk_rendering(self):
         self.rendering_view.reset()
         foldername = self.control.save_segmentation()
         self.rendering_view.load_dicom(foldername)
