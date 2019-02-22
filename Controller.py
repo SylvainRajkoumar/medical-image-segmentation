@@ -64,8 +64,8 @@ class Controller(object):
 
         for image, filename, raw in zip(images, filenames, raw_data):
             raw.PixelData = self.dicom_processing.segmentation(image)
-            raw.Rows = 352
-            raw.Colums = 308
+            # raw.Rows = 352
+            # raw.Colums = 308
             pydicom.dcmwrite(filename, raw)
         os.chdir('../')
         return path

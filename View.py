@@ -41,6 +41,7 @@ class View(QMainWindow):
         self.reset_camera_button.clicked.connect(self.rendering_view.reset_camera)
 
     def save_segmentation(self):
+        self.rendering_view.reset()
         foldername = self.control.save_segmentation()
         self.rendering_view.load_dicom(foldername)
 

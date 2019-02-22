@@ -29,6 +29,13 @@ class RenderingView(QFrame):
         self.vtk_image_reader.Update()
         self.update_rendering_view()
 
+    def reset(self):
+        self.vtk_image_reader = vtk.vtkDICOMImageReader()
+        self.vtk_image_reader.Update()
+        self.update_rendering_view()
+        # RESET VTKDICOMIMAGEREADER QUAND UN NOUVEAU PATIENT EST CHARGE
+        # DECO VTKDICOMIMAGEREADER A CHAQUE NOUVELLE SEGMENTATION
+        pass
     @timeit
     def window_initialization(self):
         vertical_layout = QVBoxLayout()
