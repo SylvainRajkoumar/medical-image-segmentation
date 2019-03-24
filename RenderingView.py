@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QFrame, QVBoxLayout, QSizePolicy
 from PyQt5.QtCore import Qt
 from utils.decorators import timeit
 
-filename = "test.stl"
+filename = "extracted.stl"
 stl_writer = vtk.vtkSTLWriter()
 stl_writer.SetFileName(filename)
 

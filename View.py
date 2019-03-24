@@ -1,7 +1,8 @@
 import os
 import cv2
-import numpy as np 
+import numpy as np
 import vtk
+from shutil import copyfile
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QPushButton
@@ -45,6 +46,8 @@ class View(QMainWindow):
         os.system("python vmtksurfacereader.py -ifile result.stl --pipe vmtkcenterlines.py --pipe vmtkrenderer.py --pipe vmtksurfaceviewer.py -opacity 0.10 --pipe vmtksurfaceviewer.py -i @vmtkcenterlines.o -array MaximumInscribedSphereRadius --pipe vmtksurfaceviewer.py -i @vmtkcenterlines.o ")
 
     def connectivity(self):
+        copyfile("D:/projet-medical/medical-image-segmentation/extracted.stl", 
+        "C:/Users/Sylvain/Anaconda3/envs/medical_segmentation/Lib/site-packages/vmtk/extracted.stl")
         os.chdir("C:/Users/Sylvain/Anaconda3/envs/medical_segmentation/Lib/site-packages/vmtk")
         os.system("python vmtksurfaceconnectivity.py -ifile extracted.stl --pipe vmtksurfaceviewer.py -ofile result.stl")
     
@@ -78,6 +81,7 @@ class View(QMainWindow):
 
     def toggle_rendering_button(self, boolean):
         self.connectivity_button.setVisible(boolean)
+        self.centerline_button.setVisible(boolean)
         self.rendering_button.setVisible(boolean)
 
     @pyqtSlot()
