@@ -1,38 +1,14 @@
-# Python Standard Libraries
 import glob
 import time
 import os
-
-# Third-Party Libraries
 import pydicom
 import numpy as np
 import vtk
 from vtk.util import numpy_support
-
 from utils.decorators import timeit
-# import timeit
 
-# TODO Charger les images avec VTK
-# TODO 
 
 class DicomDataset(object):
-    """
-    A class used to load and manage a dicom dataset
-
-    ...
-
-    Attributes
-    ----------
-    dicom_dataset : array
-        
-    current_index : int
-        
-
-    Methods
-    -------
-    read_dicom_dataset(folder_path)
-        Read dicom files from the folder_path and store the data in the dicom_dataset array
-    """
 
     def __init__(self):
         object.__init__(self)

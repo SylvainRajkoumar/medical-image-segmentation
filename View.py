@@ -1,5 +1,4 @@
 import os
-
 import cv2
 import numpy as np 
 import vtk
@@ -8,7 +7,6 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QPushButton
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QImage, QPixmap
-
 from RenderingView import RenderingView
 from Controller import Controller
 
@@ -39,7 +37,17 @@ class View(QMainWindow):
         self.segmentation_checkbox.clicked.connect(self.control.toggle_segmentation)
         self.segmentation_threshold_slider.valueChanged.connect(self.handle_segmentation_slider)
         self.reset_camera_button.clicked.connect(self.rendering_view.reset_camera)
+        self.connectivity_button.clicked.connect(self.connectivity)
+        self.centerline_button.clicked.connect(self.centerline)
 
+    def centerline(self):
+        os.chdir("C:/Users/Sylvain/Anaconda3/envs/medical_segmentation/Lib/site-packages/vmtk")
+        os.system("python vmtksurfacereader.py -ifile result.stl --pipe vmtkcenterlines.py --pipe vmtkrenderer.py --pipe vmtksurfaceviewer.py -opacity 0.10 --pipe vmtksurfaceviewer.py -i @vmtkcenterlines.o -array MaximumInscribedSphereRadius --pipe vmtksurfaceviewer.py -i @vmtkcenterlines.o ")
+
+    def connectivity(self):
+        os.chdir("C:/Users/Sylvain/Anaconda3/envs/medical_segmentation/Lib/site-packages/vmtk")
+        os.system("python vmtksurfaceconnectivity.py -ifile extracted.stl --pipe vmtksurfaceviewer.py -ofile result.stl")
+    
     def vtk_rendering(self):
         self.rendering_view.reset()
         foldername = self.control.save_segmentation()
@@ -66,10 +74,10 @@ class View(QMainWindow):
         self.segmentation_checkbox.setVisible(boolean)
 
     def toggle_rendering_tools(self, boolean):
-        self.save_rendering_button.setVisible(boolean)
         self.reset_camera_button.setVisible(boolean)
 
     def toggle_rendering_button(self, boolean):
+        self.connectivity_button.setVisible(boolean)
         self.rendering_button.setVisible(boolean)
 
     @pyqtSlot()

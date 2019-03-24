@@ -1,13 +1,11 @@
-# Third-Party Libraries
 import cv2
 import numpy as np
+import pydicom
+import os, glob, shutil
 from PyQt5.QtWidgets import QMessageBox
-
 from DicomDataset import DicomDataset
 from DicomProcessing import DicomProcessing
 from utils.decorators import timeit
-import pydicom
-import os, glob, shutil
 
 
 class Controller(object):
@@ -27,7 +25,6 @@ class Controller(object):
             self.update_current_image()
             return True
         
-        #  A déplacer dans la vue
         warning = QMessageBox()
         warning.setWindowTitle("Error while loading DICOM files")
         warning.setText("Please make sure that only dicom files are in the selected folder")
@@ -57,15 +54,14 @@ class Controller(object):
     def save_segmentation(self):
         images, filenames, raw_data = self.dicom_reader.get_dataset()
         path = "segmented_images"
+
         if os.path.isdir('./' + path):
             shutil.rmtree('./' + path)
         os.mkdir(path)
         os.chdir('./' + path)
 
         for image, filename, raw in zip(images, filenames, raw_data):
-            raw.PixelData = self.dicom_processing.segmentation(image)
-            # raw.Rows = 352
-            # raw.Colums = 308
+            raw.PixelData = image #self.dicom_processing.segmentation(image)
             pydicom.dcmwrite(filename, raw)
         os.chdir('../')
         return path

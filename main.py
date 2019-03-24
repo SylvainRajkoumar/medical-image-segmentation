@@ -1,8 +1,9 @@
-from View import View
-from Controller import Controller
+import sys
 from PyQt5.QtWidgets import QApplication, QVBoxLayout, QSizeGrip
 from PyQt5.QtCore import Qt
-import sys
+from View import View
+from Controller import Controller
+
 
 if __name__ == '__main__':
 

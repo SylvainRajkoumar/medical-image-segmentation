@@ -5,14 +5,14 @@ from PyQt5.QtCore import Qt
 from utils.decorators import timeit
 
 filename = "test.stl"
-stlWriter = vtk.vtkSTLWriter()
-stlWriter.SetFileName(filename)
-
+stl_writer = vtk.vtkSTLWriter()
+stl_writer.SetFileName(filename)
 
 class RenderingView(QFrame):
 
     def __init__(self):
         QFrame.__init__(self)
+
         self.rendering_threshold = 0
         self.arter = vtk.vtkActor()
         self.outline = vtk.vtkActor()
@@ -33,9 +33,7 @@ class RenderingView(QFrame):
         self.vtk_image_reader = vtk.vtkDICOMImageReader()
         self.vtk_image_reader.Update()
         self.update_rendering_view()
-        # RESET VTKDICOMIMAGEREADER QUAND UN NOUVEAU PATIENT EST CHARGE
-        # DECO VTKDICOMIMAGEREADER A CHAQUE NOUVELLE SEGMENTATION
-        pass
+        
     @timeit
     def window_initialization(self):
         vertical_layout = QVBoxLayout()
@@ -64,28 +62,29 @@ class RenderingView(QFrame):
         self.arterExtractor.SetInputConnection(self.vtk_image_reader.GetOutputPort())
         self.arterExtractor.SetValue(0, self.rendering_threshold)
 
-        arterNormals = vtk.vtkPolyDataNormals() #Calcul des normales
-        arterNormals.SetInputConnection(self.arterExtractor.GetOutputPort())
-        arterNormals.SetFeatureAngle(100.0)
-        stlWriter.SetInputConnection(arterNormals.GetOutputPort())
-        stlWriter.Write()
+        self.arterNormals = vtk.vtkPolyDataNormals()
+        self.arterNormals.SetInputConnection(self.arterExtractor.GetOutputPort())
+        self.arterNormals.SetFeatureAngle(100.0)
 
-        arterStripper = vtk.vtkStripper() #Génération d'un ensemble de polygone à partir des coordonées calculées précédemment
-        arterStripper.SetInputConnection(arterNormals.GetOutputPort())
-
-        arterMapper = vtk.vtkPolyDataMapper() #Permet de passer des polygones à des formes géométriques graphiques
-        arterMapper.SetInputConnection(arterStripper.GetOutputPort())
-        arterMapper.ScalarVisibilityOff()
+        stl_writer.SetInputConnection(self.arterNormals.GetOutputPort())
+        stl_writer.Write()
         
-        self.arter.SetMapper(arterMapper)
+        self.arterStripper = vtk.vtkStripper()
+        self.arterStripper.SetInputConnection(self.arterNormals.GetOutputPort())
+
+        self.arterMapper = vtk.vtkPolyDataMapper()
+        self.arterMapper.SetInputConnection(self.arterStripper.GetOutputPort())
+        self.arterMapper.ScalarVisibilityOff()
+        
+        self.arter.SetMapper(self.arterMapper)
         self.arter.GetProperty().SetDiffuseColor(1, 1, .9412)
         
-        outlineData = vtk.vtkOutlineFilter()
-        outlineData.SetInputConnection(self.vtk_image_reader.GetOutputPort())
-        mapOutline = vtk.vtkPolyDataMapper()
-        mapOutline.SetInputConnection(outlineData.GetOutputPort())
+        self.outlineData = vtk.vtkOutlineFilter()
+        self.outlineData.SetInputConnection(self.vtk_image_reader.GetOutputPort())
+        self.mapOutline = vtk.vtkPolyDataMapper()
+        self.mapOutline.SetInputConnection(self.outlineData.GetOutputPort())
 
-        self.outline.SetMapper(mapOutline)
+        self.outline.SetMapper(self.mapOutline)
         self.outline.GetProperty().SetColor(1, 1, 1)
 
         self.renderer.AddActor(self.outline)
@@ -93,3 +92,7 @@ class RenderingView(QFrame):
    
         self.renderer.ResetCamera()
         self.renderer_interactor.Initialize()
+
+    # def save_stl(self):
+    #     stl_writer.SetInputConnection(self.arterNormals.GetOutputPort())
+    #     stl_writer.Write()
