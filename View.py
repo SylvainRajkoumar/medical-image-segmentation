@@ -40,10 +40,16 @@ class View(QMainWindow):
         self.reset_camera_button.clicked.connect(self.rendering_view.reset_camera)
         self.connectivity_button.clicked.connect(self.connectivity)
         self.centerline_button.clicked.connect(self.centerline)
+        self.arter_button.clicked.connect(self.arter_type)
 
     def centerline(self):
         os.chdir("C:/Users/Sylvain/Anaconda3/envs/medical_segmentation/Lib/site-packages/vmtk")
-        os.system("python vmtksurfacereader.py -ifile result.stl --pipe vmtkcenterlines.py --pipe vmtkrenderer.py --pipe vmtksurfaceviewer.py -opacity 0.10 --pipe vmtksurfaceviewer.py -i @vmtkcenterlines.o -array MaximumInscribedSphereRadius --pipe vmtksurfaceviewer.py -i @vmtkcenterlines.o ")
+        os.system("python vmtksurfacereader.py -ifile result.stl --pipe vmtkcenterlines.py --pipe vmtkrenderer.py --pipe vmtksurfaceviewer.py -opacity 0.10 --pipe vmtksurfaceviewer.py -i @vmtkcenterlines.o -array MaximumInscribedSphereRadius --pipe vmtksurfaceviewer.py -i @vmtkcenterlines.o")
+    
+    def arter_type(self):
+        os.chdir("C:/Users/Sylvain/Anaconda3/envs/medical_segmentation/Lib/site-packages/vmtk")
+        os.system("python vmtksurfacereader.py -ifile result.stl --pipe vmtkcenterlines.py --pipe vmtkpointsplitextractor.py -ofile centerlinespoints.dat")
+    
 
     def connectivity(self):
         copyfile("D:/projet-medical/medical-image-segmentation/extracted.stl", 
@@ -82,6 +88,7 @@ class View(QMainWindow):
     def toggle_rendering_button(self, boolean):
         self.connectivity_button.setVisible(boolean)
         self.centerline_button.setVisible(boolean)
+        self.arter_button.setVisible(boolean)
         self.rendering_button.setVisible(boolean)
 
     @pyqtSlot()
